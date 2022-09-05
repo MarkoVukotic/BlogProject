@@ -66,7 +66,7 @@ class PostsController extends Controller
     public function show($id)
     {
         try {
-            return view('posts.show')->with(['post', BlogPost::findOrFail($id)]);
+            return view('posts.show')->with(['post' => BlogPost::findOrFail($id)]);
         } catch (\Exception $exception) {
             echo $exception->getLine();
             echo $exception->getMessage();

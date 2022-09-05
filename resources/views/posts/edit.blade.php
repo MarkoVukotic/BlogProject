@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title', 'Update the post')
 
@@ -9,7 +9,7 @@
         @csrf
         @method('PATCH')
         @include('partials.form')
-        <div><input type="submit" value="Update"></div>
+        <div><input type="submit" value="Update" class="btn btn-primary"></div>
     </form>
 
 @endsection

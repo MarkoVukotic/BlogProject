@@ -1,10 +1,14 @@
-<div>
-    <div><input type="text" name="title" id="" value="{{old('title', optional($post ?? null)->title)}}"></div>
+<div class="form-group">
+    <div>
+        <label for="title">Title</label>
+        <input type="text" class="form-control" name="title" id="title" value="{{old('title', optional($post ?? null)->title)}}"></div>
     @error('title')
-    <div>{{$message}}</div>
+    <div class="alert alert-danger  mt-2">{{$message}}</div>
     @enderror
-    <div><textarea name="content" id="" cols="30" rows="10">{{old('content', optional($post ?? null)->content)}}</textarea></div>
+    <div class="form-group">
+        <label for="content">Content</label>
+        <textarea name="content" id="content" cols="30" class="form-control" rows="10">{{old('content', optional($post ?? null)->content)}}</textarea></div>
     @error('content')
-    <div>{{$message}}</div>
+    <div class="alert alert-danger mt-2">{{$message}}</div>
     @enderror
 </div>

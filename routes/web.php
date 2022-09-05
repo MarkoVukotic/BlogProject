@@ -35,4 +35,4 @@ Route::get('/recent-posts/{$dats_ago?}',function($daysAgo = 20){
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
