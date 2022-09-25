@@ -16,7 +16,7 @@ class PostsController extends Controller
     public function index()
     {
         try {
-            return view('posts.index')->with('posts', BlogPost::all());
+            return view('posts.index')->with('posts', BlogPost::withCount('comments')->get());
         } catch (\Exception $exception) {
             echo $exception->getLine();
             echo $exception->getMessage();
