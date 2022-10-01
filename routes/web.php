@@ -17,7 +17,6 @@ use \App\Http\Controllers\{
 |
 */
 
-Route::get('/', [HomeController::class, 'home'])->name('home.index');
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 
 
@@ -28,7 +27,7 @@ Route::get('/posts/{id}', function ($id){
    return 'Blog post' . $id;
 })->name('posts.show');
 
-Route::get('/recent-posts/{$dats_ago?}',function($daysAgo = 20){
+Route::get('/recent-posts/{$dats_ago?}', function($daysAgo = 20){
    return 'Post from ' . $daysAgo . ' days ago';
 })->name('post.recent.index');
 
