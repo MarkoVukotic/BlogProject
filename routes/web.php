@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\{
     HomeController,
@@ -17,21 +18,9 @@ use \App\Http\Controllers\{
 |
 */
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
-
-
 Route::resource('/posts', PostsController::class);
-
-
-Route::get('/posts/{id}', function ($id){
-   return 'Blog post' . $id;
-})->name('posts.show');
-
-Route::get('/recent-posts/{$dats_ago?}', function($daysAgo = 20){
-   return 'Post from ' . $daysAgo . ' days ago';
-})->name('post.recent.index');
-
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

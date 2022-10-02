@@ -13,6 +13,11 @@
         <ul class="navbar-nav ms-auto">
             <!-- Authentication Links -->
             @guest
+                    <li class="nav-item"><a href="{{route('home')}}" class="p-2 text-dark nav-link">Home</a></li>
+                    <li class="nav-item"><a href="{{route('home.contact')}}" class="p-2 text-dark nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="{{route('posts.index')}}" class="p-2 text-dark nav-link">Blog Posts</a></li>
+                    <li class="nav-item"><a href="{{route('posts.create')}}" class="p-2 text-dark nav-link">Add Blog Post</a></li>
+
                 @if (Route::has('login'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
