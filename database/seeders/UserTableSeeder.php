@@ -16,5 +16,10 @@ class UserTableSeeder extends Seeder
     {
         $userCount = max((int)$this->command->ask('How many users would you like to create', 20), 1);
         User::factory($userCount)->create();
+        User::factory()->create(
+            ['email' => 'markovukotic32@gmail.com',
+            'password' => bcrypt('marko123') 
+            ]
+        );
     }
 }
