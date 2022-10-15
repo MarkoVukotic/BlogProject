@@ -7,7 +7,11 @@
 
 <div class="mb-3">
 
+    @can('update', $post)
     <a href="{{route('posts.edit', ['post' => $post->id])}}" class="btn btn-primary">Edit</a>
+    @endcan
+
+    @can('delete', $post)
     <form class="d-inline" action="{{route('posts.destroy', ['post' => $post->id])}}" method="POST">
         @csrf
         @method('DELETE')
@@ -18,4 +22,8 @@
             <p>No comments yet!</p>
         @endif
     </form>
+        @endcan
+
+
+
 </div>
