@@ -1,5 +1,10 @@
 <h3><a href="{{route('posts.show', $post->id)}}">{{$post->title}}</a></h3>
 
+<div class="text-muted">
+<p>Added: {{$post->created_at->diffForHumans()}}</p>
+<p>Added by: {{ $post->user->name }}</p>
+</div>
+
 <div class="mb-3">
 
     <a href="{{route('posts.edit', ['post' => $post->id])}}" class="btn btn-primary">Edit</a>

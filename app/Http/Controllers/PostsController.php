@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
-use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
@@ -87,7 +86,9 @@ class PostsController extends Controller
     public function edit($id)
     {
         try {
-            return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
+           $blog_post =  BlogPost::findOrFail($id);
+           $this->authorize($blog_post);
+            return view('posts.edit', ['post' => $blog_post]);
         } catch (\Exception $exception) {
             echo $exception->getLine();
             echo $exception->getMessage();
@@ -125,7 +126,9 @@ class PostsController extends Controller
     public function destroy($id)
     {
         try {
-            BlogPost::findOrFail($id)->delete();
+            $blog_post = BlogPost::findOrFail($id);
+            $this->authorize($blog_post);
+            $blog_post->delete();
 
             return redirect()->route('posts.index');
         } catch (\Exception $exception) {
