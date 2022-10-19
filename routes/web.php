@@ -20,6 +20,8 @@ use \App\Http\Controllers\{
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
+Route::get('/secret', [HomeController::class, 'secret'])->name('secret')->middleware('can:home_secret');
+
 Route::resource('/posts', PostsController::class);
 
 Auth::routes();
