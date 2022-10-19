@@ -12,8 +12,11 @@
                 <div class="row mb-4">
                     @include('partials.mostCommentedBlogPost')
                 </div>
-                <div class="row">
+                <div class="row mb-4">
                     @include('partials.mostActiveUsers')
+                </div>
+                <div class="row">
+                    @include('partials.mostActiveUsersLastMonth')
                 </div>
             </div>
         </div>
