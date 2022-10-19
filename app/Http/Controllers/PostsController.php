@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Comment;
 
 class PostsController extends Controller
 {
@@ -19,7 +20,11 @@ class PostsController extends Controller
     public function index()
     {
         try {
-            return view('posts.index')->with('posts', BlogPost::latest()->withCount('comments')->get());
+            $posts = BlogPost::latest()->withCount('comments')->get();
+            $mostCommented = BlogPost::mostCommented()->take(5)->get();
+
+            return view('posts.index', compact( 'posts'), compact('mostCommented'));
+
         } catch (\Exception $exception) {
             echo $exception->getLine();
             echo $exception->getMessage();
