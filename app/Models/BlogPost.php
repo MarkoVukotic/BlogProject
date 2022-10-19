@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class BlogPost extends Model
 {
@@ -12,14 +13,15 @@ class BlogPost extends Model
 
     protected $fillable = [
         'title',
-        'content'
+        'content',
+        'user_id'
     ];
 
     use HasFactory;
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->latest();
     }
 
     public function user(){
@@ -38,5 +40,8 @@ class BlogPost extends Model
         });
     }
 
+    public function scopeLatest(Builder $query){
+        return $query->orderBy(static::CREATED_AT, 'desc');
+    }
 
 }
