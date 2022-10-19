@@ -1,7 +1,7 @@
-<div class="col-4">
-    <div class="card" style="width: 18rem;">
+
+    <div class="card" style="width: 100%;">
         <div class="card-body">
-            <h5 class="card-title">Most Commented</h6>
+            <h5 class="card-title">Most Commented</h5>
                 <h6 class="card-subtitle mb-2 text-muted">What people are currently talking about</h6>
         </div>
         <ul class="list-group list-group-flush">
@@ -14,4 +14,4 @@
             @endforeach
         </ul>
     </div>
-</div>
+

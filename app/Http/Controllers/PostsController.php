@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\Comment;
+use App\Models\User;
 
 class PostsController extends Controller
 {
@@ -22,8 +23,9 @@ class PostsController extends Controller
         try {
             $posts = BlogPost::latest()->withCount('comments')->get();
             $mostCommented = BlogPost::mostCommented()->take(5)->get();
+            $mostActiveUsers = User::WithMostBlogPosts()->take(5)->get();
 
-            return view('posts.index', compact( 'posts'), compact('mostCommented'));
+            return view('posts.index', compact(['posts', 'mostCommented', 'mostActiveUsers']));
 
         } catch (\Exception $exception) {
             echo $exception->getLine();
