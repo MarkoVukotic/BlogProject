@@ -7,10 +7,8 @@
     </del>
 @endif
 
-<div class="text-muted">
-    <p>Added: {{$post->created_at->diffForHumans()}}</p>
-    <p>Added by: {{ $post->user->name }}</p>
-</div>
+@updated(['date' => $post->created_at, 'name' => $post->user->name])
+@endupdated
 
 <div class="mb-3">
 

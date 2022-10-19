@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-@include('components.head')
+@include('head')
 <body class="container">
-@include('components.navigation')
+@include('navigation')
 <div class="container">
     @yield('content')
 </div>
