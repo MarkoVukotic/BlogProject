@@ -6,6 +6,7 @@ use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\Comment;
 use App\Models\User;
+use \Illuminate\Support\Facades\Cache;
 
 class PostsController extends Controller
 {
@@ -21,10 +22,19 @@ class PostsController extends Controller
     public function index()
     {
         try {
-            $posts = BlogPost::latest()->withCount('comments')->get();
-            $mostCommented = BlogPost::mostCommented()->take(5)->get();
-            $mostActiveUsers = User::WithMostBlogPosts()->take(5)->get();
-            $mostActiveUsersLastMonth = User::WithMostBlogPostLastMonth()->take(5)->get();
+            $mostCommented = Cache::remember('blog-post-commented', 60, function(){
+               return BlogPost::mostCommented()->take(5)->get();
+            });
+
+            $mostActiveUsers = Cache::remember('users-most-active', 60, function(){
+                return User::WithMostBlogPosts()->take(5)->get();
+            });
+
+            $mostActiveUsersLastMonth = Cache::remember('users-most-active-last-month', 60, function(){
+               return User::WithMostBlogPostLastMonth()->take(5)->get();
+            });
+
+            $posts = BlogPost::latest()->withCount('comments')->with('user')->get();
 
             return view('posts.index', compact(['posts', 'mostCommented', 'mostActiveUsers', 'mostActiveUsersLastMonth']));
 
@@ -77,8 +87,12 @@ class PostsController extends Controller
     public function show($id)
     {
         try {
-            return view('posts.show')->with(
-                ['post' => BlogPost::with('comments')->findOrFail($id)]);
+            $blogPost = Cache::remember("blog-post-{$id}", 60, function() use($id){
+                return BlogPost::with('comments')->findOrFail($id);
+            });
+            $counter = $this->getNumberOfPeopleCurrentlyReadBlogPost($id);
+
+            return view('posts.show')->with(['post' => $blogPost, 'counter' => $counter]);
         } catch (\Exception $exception) {
             echo $exception->getLine();
             echo $exception->getMessage();
@@ -144,4 +158,46 @@ class PostsController extends Controller
             echo $exception->getMessage();
         }
     }
+
+    public function getNumberOfPeopleCurrentlyReadBlogPost($id)
+    {
+        try {
+            $sessionId = session()->getId();
+            $counterKey = "blog-post-{$id}-counter";
+            $userKey = "blog-post-{$id}-users";
+
+            $users = Cache::get($userKey, []);
+            $usersUpdate = [];
+            $diffrence = 0;
+            $now = now();
+
+            foreach ($users as $session => $lastVisit) {
+                if ($now->diffInMinutes($lastVisit) >= 1) {
+                    $diffrence--;
+                } else {
+                    $usersUpdate[$session] = $lastVisit;
+                }
+            }
+
+            if (!array_key_exists($sessionId, $users) || $now->diffInMinutes($users[$sessionId]) >= 1) {
+                $diffrence++;
+            }
+
+            $usersUpdate[$sessionId] = $now;
+            Cache::forever($userKey, $usersUpdate);
+
+            if (!Cache::has($counterKey)) {
+                Cache::forever($counterKey, 1);
+            } else {
+                Cache::increment($counterKey, $diffrence);
+            }
+
+            return Cache::get($counterKey);
+
+        } catch (\Exception $exception){
+            echo $exception->getMessage();
+            echo $exception->getLine();
+        }
+    }
+
 }
