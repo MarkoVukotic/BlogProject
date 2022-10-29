@@ -23,7 +23,7 @@ class PostsController extends Controller
     {
         try {
             $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-commented', 60, function(){
-               return BlogPost::mostCommented()->take(5)->get();
+               return BlogPost::mostCommented()->with('tags')->with('user')->take(5)->get();
             });
 
             $mostActiveUsers = Cache::remember('users-most-active', 60, function(){
@@ -34,7 +34,7 @@ class PostsController extends Controller
                return User::WithMostBlogPostLastMonth()->take(5)->get();
             });
 
-            $posts = BlogPost::latest()->withCount('comments')->with('user')->get();
+            $posts = BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get();
 
             return view('posts.index', compact(['posts', 'mostCommented', 'mostActiveUsers', 'mostActiveUsersLastMonth']));
 
@@ -68,8 +68,7 @@ class PostsController extends Controller
     public function store(StorePost $request)
     {
         try {
-            $validated = $request->validated();
-            $post = BlogPost::create($validated + ['user_id' => auth()->id()]);
+            $post = BlogPost::create($request->validated() + ['user_id' => auth()->id()]);
 
             return redirect()->route('posts.show', $post->id);
         } catch (\Exception $exception) {

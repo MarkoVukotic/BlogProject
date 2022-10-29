@@ -10,6 +10,9 @@
 @updated(['date' => $post->created_at, 'name' => $post->user->name])
 @endupdated
 
+@tags(['tags' => $post->tags])@endtags
+
+
 <div class="mb-3">
 
     @can('update', $post)
