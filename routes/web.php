@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\{
     HomeController,
-    PostsController
+    PostsController,
+    PostTagController
 };
 
 /*
@@ -21,6 +22,7 @@ use \App\Http\Controllers\{
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 Route::get('/secret', [HomeController::class, 'secret'])->name('secret')->middleware('can:home_secret');
+Route::get('/posts/tag/{id}', [PostTagController::class, 'index'])->name('posts.tags.index');
 
 Route::resource('/posts', PostsController::class);
 

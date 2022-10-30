@@ -22,21 +22,9 @@ class PostsController extends Controller
     public function index()
     {
         try {
-            $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-commented', 60, function(){
-               return BlogPost::mostCommented()->with('tags')->with('user')->take(5)->get();
-            });
-
-            $mostActiveUsers = Cache::remember('users-most-active', 60, function(){
-                return User::WithMostBlogPosts()->take(5)->get();
-            });
-
-            $mostActiveUsersLastMonth = Cache::remember('users-most-active-last-month', 60, function(){
-               return User::WithMostBlogPostLastMonth()->take(5)->get();
-            });
-
             $posts = BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get();
 
-            return view('posts.index', compact(['posts', 'mostCommented', 'mostActiveUsers', 'mostActiveUsersLastMonth']));
+            return view('posts.index', compact(['posts']));
 
         } catch (\Exception $exception) {
             echo $exception->getLine();
