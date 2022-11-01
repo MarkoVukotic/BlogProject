@@ -29,7 +29,7 @@
                     {{$comment->content}},
                 </p>
                 <p class="text-muted">
-                    @updated(['date' => $comment->created_at])
+                    @updated(['date' => $comment->created_at, 'name' => $comment->user->name])
                     @endupdated
                 </p>
             @empty
