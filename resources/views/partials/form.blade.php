@@ -11,4 +11,11 @@
     @error('content')
     <div class="alert alert-danger mt-2">{{$message}}</div>
     @enderror
+
+    <div class="form-group">
+        <div><label for="thumbnail">Thumbnail</label></div>
+        <input type="file" class="form-control-file" name="thumbnail" id="title"></div>
+    @error('thumbnail')
+    <div class="alert alert-danger mt-2">{{$message}}</div>
+    @enderror
 </div>
