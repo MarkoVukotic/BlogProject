@@ -58,4 +58,10 @@ class BlogPost extends Model
             $blogPost->comments()->restore();
         });
     }
+
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
+
 }

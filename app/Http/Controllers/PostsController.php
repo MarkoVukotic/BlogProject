@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
-use App\Models\Comment;
-use App\Models\User;
+use App\Models\Image;
 use \Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -56,9 +56,16 @@ class PostsController extends Controller
     public function store(StorePost $request)
     {
         try {
-            $post = BlogPost::create($request->validated() + ['user_id' => auth()->id()]);
+            $blogPost = BlogPost::create($request->validated() + ['user_id' => auth()->id()]);
 
-            return redirect()->route('posts.show', $post->id);
+            if($request->hasFile('thumbnail')){
+                $path = $request->file('thumbnail')->store('thumbnails');
+                $blogPost->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+            
+            return redirect()->route('posts.show', $blogPost->id);
         } catch (\Exception $exception) {
             echo $exception->getLine();
             echo $exception->getMessage();
